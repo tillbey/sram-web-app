@@ -1,0 +1,37 @@
+---
+- name: Playbook to install a web app behind nginx with authentication
+  gather_facts: false
+  hosts: 
+    - localhost
+  become: true
+
+  tasks:
+
+  - name: add web app config to nginx
+    lineinfile:
+      path: /etc/nginx/app-location-conf.d/authentication.conf
+      line: |
+        location / {
+          error_page 401 = @custom_401;
+          auth_request /validate;
+          auth_request_set $username $upstream_http_username;
+          proxy_set_header REMOTE_USER $username;
+          proxy_pass http://127.0.0.1:3001;
+          proxy_redirect http://localhost:3001/ $scheme://$host/;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_set_header X-Forwarded-Proto $scheme;
+          proxy_set_header Upgrade $http_upgrade;
+          proxy_set_header Connection $connection_upgrade;
+          client_max_body_size 10G;
+        }
+
+  - name: Restart nginx
+    service:
+      name: nginx
+      state: restarted
+
+
+  
+
