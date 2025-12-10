@@ -33,12 +33,12 @@
       name: nginx
       state: restarted
 
-  - name: Install uv
-    shell: |
-      curl -LsSf https://astral.sh/uv/install.sh | sh
+  # - name: Install uv
+  #   shell: |
+  #     curl -LsSf https://astral.sh/uv/install.sh | sh
 
-  - name: Start Marimo server
-    shell: $HOME/.local/bin/env/uvx marimo edit -p 3001 --no-token
+  # - name: Start Marimo server
+  #   shell: $HOME/.local/bin/env/uvx marimo edit -p 3001 --no-token
 
 
 
