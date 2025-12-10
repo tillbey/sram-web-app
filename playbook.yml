@@ -36,10 +36,9 @@
   - name: Install uv
     shell: |
       curl -LsSf https://astral.sh/uv/install.sh | sh
-      source $HOME/.local/bin/env
 
   - name: Start Marimo server
-    shell: uvx marimo edit -p 3001 --no-token
+    shell: $HOME/.local/bin/env/uvx marimo edit -p 3001 --no-token
 
 
 
