@@ -1,0 +1,30 @@
+---
+- name: Playbook to install a web app behind nginx with authentication
+  gather_facts: false
+  hosts: 
+    - localhost
+  become: true
+
+  tasks:
+
+  - name: add static file config to nginx
+    lineinfile:
+      path: /etc/nginx/app-location-conf.d/authentication.conf
+      line: |
+        location / {
+          error_page 401 = @custom_401;
+          auth_request /validate;
+          auth_request_set $username $upstream_http_username;
+          client_max_body_size 10G;
+          root /data/raw-data/;
+        }
+
+  - name: Restart nginx
+    service:
+      name: nginx
+      state: restarted
+
+
+
+  
+
