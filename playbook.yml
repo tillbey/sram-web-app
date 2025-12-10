@@ -24,6 +24,7 @@
           proxy_set_header X-Forwarded-Proto $scheme;
           proxy_set_header Upgrade $http_upgrade;
           proxy_set_header Connection $connection_upgrade;
+          proxy_http_version  1.1;
           client_max_body_size 10G;
         }
 
@@ -31,6 +32,15 @@
     service:
       name: nginx
       state: restarted
+
+  - name: Install uv
+    shell: |
+      curl -LsSf https://astral.sh/uv/install.sh | sh
+      source $HOME/.local/bin/env
+
+  - name: Start Marimo server
+    shell: uvx marimo edit -p 3001 --no-token
+
 
 
   
